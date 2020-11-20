@@ -1,15 +1,19 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine. 
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
 jobs:
-  build-and-test:  # This is the name of the job, feel free to change it to better match what you're trying to do!
-    # These next lines defines a docker executors: https://circleci.com/docs/2.0/executor-types/
-    # You can specify an image from dockerhub or use one of the convenience images from CircleCI's Developer Hub
+  # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
+  build-and-test:  
+    # These next lines define a docker executor: https://circleci.com/docs/2.0/executor-types/
+    # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # Be sure to upate the tag on this image to a more stable version, using latest can result in unstable builds.
     docker:
-      # Be sure to upate the tag on this image to a more stable version, using latest can result in unstable builds.
       - image: microsoft/dotnet:latest
     steps:
       # Checkout the code as the first step.
-      # Then simply use the dotnet container as you'd expect and run your tests
-      # CircleCI will report the results back to your VCS provider.
       - checkout
+      # Then simply use the dotnet container as you'd expect and run your tests
       - run:
           # Update this line with the directory that contains your tests project file
           working_directory: ~/project/App.Tests
@@ -17,12 +21,12 @@ jobs:
           command: |
             dotnet test
             
+
 workflows:
-  sample:  # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run. 
-    # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows 
+  # Below is the definition of your workflow.
+  # Inside the workflow, you provide the jobs you want to run, e.g this workflow runs the build-and-test job above.
+  # CircleCI will run this workflow on every commit.
+  # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  sample: 
     jobs:
       - build-and-test
-      
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
-version: 2.1
